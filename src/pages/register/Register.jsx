@@ -1,12 +1,14 @@
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 const Register = () => {
     const { user, setUser, googleLogin } = useAuth();
 
     const handleGoogleLogin = async () => {
         googleLogin()
-            .then(user => setUser(user))
+            .then((user) => {
+                setUser(user)
+            })
             .catch(err => console.log(err));
     }
     return (

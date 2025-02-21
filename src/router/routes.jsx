@@ -5,6 +5,8 @@ import Home from "../pages/home/Home";
 import Register from "../pages/register/Register";
 import Login from "../pages/login/Login";
 import WorkArea from "../pages/workArea/WorkArea";
+import PrivateRoute from "./PrivateRoute";
+import LoginRegisterProtect from "./LoginRegisterProtect";
 
 const router = createBrowserRouter([
     {
@@ -12,16 +14,22 @@ const router = createBrowserRouter([
         element: <Home></Home>,
     },
     {
-        path:"/register",
-        element: <Register></Register>
+        path: "/register",
+        element: <LoginRegisterProtect>
+            <Register></Register>
+        </LoginRegisterProtect>
     },
     {
-        path:"/login",
-        element: <Login></Login>
+        path: "/login",
+        element: <LoginRegisterProtect>
+            <Login></Login>
+        </LoginRegisterProtect>
     },
     {
-        path:"/workArea",
-        element: <WorkArea></WorkArea>
+        path: "/workArea",
+        element: <PrivateRoute>
+            <WorkArea></WorkArea>
+        </PrivateRoute>
     }
 ]);
 

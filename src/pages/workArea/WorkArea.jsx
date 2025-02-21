@@ -6,8 +6,9 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import Swal from "sweetalert2";
 
-const Task = ({ task, moveTask }) => {
+const Task = ({ task, moveTask, handleDeleteTask }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "TASK",
         item: { id: task?._id },
@@ -28,23 +29,29 @@ const Task = ({ task, moveTask }) => {
                 <p className="text-sm">{task?.description}</p>
                 <p className="text-[#ff6867] text-sm">{task?.timestamp}</p>
             </div>
-            <div className="col-span-1 text-lg flex flex-col justify-between items-center text-[#ff6867]">
-                <FaEdit title="Edit" />
+            <div className="col-span-1 text-lg flex flex-col justify-between items-center text-[#ff6867] gap-1">
+                <FaEdit size={20} title="Edit" />
                 <TbProgressHelp
+                    size={20}
                     title="Make Progress"
                     onClick={() => moveTask(task?._id, "In Progress")}
                 />
                 <IoCheckmarkDoneCircleOutline
+                    size={20}
                     title="Make Completed"
                     onClick={() => moveTask(task?._id, "Done")}
                 />
-                <TiDeleteOutline title="Delete" />
+                <TiDeleteOutline
+                    size={20}
+                    title="Delete"
+                    onClick={() => handleDeleteTask(task?._id)}
+                />
             </div>
         </div>
     );
 };
 
-const Column = ({ title, tasks, moveTask }) => {
+const Column = ({ title, tasks, moveTask, handleDeleteTask }) => {
     const [, drop] = useDrop(() => ({
         accept: "TASK",
         drop: (item) => moveTask(item.id, title),
@@ -61,7 +68,12 @@ const Column = ({ title, tasks, moveTask }) => {
 
             <div className="space-y-3">
                 {tasks?.map((task) => (
-                    <Task key={task._id} task={task} moveTask={moveTask} />
+                    <Task
+                        key={task._id}
+                        task={task}
+                        moveTask={moveTask}
+                        handleDeleteTask={handleDeleteTask}
+                    />
                 ))}
             </div>
         </div>
@@ -136,7 +148,7 @@ const WorkArea = () => {
             return;
         }
 
-        setError(""); // Clear error if valid data
+        setError("");
 
         try {
             const response = await fetch("http://localhost:3000/task", {
@@ -146,15 +158,15 @@ const WorkArea = () => {
                 },
                 body: JSON.stringify({
                     ...newTask,
-                    email: user?.email, // Include user email
+                    email: user?.email,
                 }),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                setTasks((prevTasks) => [...prevTasks, data]); // Add new task to state
-                setModalOpen(false); // Close modal
+                setTasks((prevTasks) => [...prevTasks, data]);
+                setModalOpen(false);
             } else {
                 console.error("Error adding task:", data.message);
                 setError("Failed to add task.");
@@ -162,6 +174,37 @@ const WorkArea = () => {
         } catch (error) {
             console.error("Error adding task:", error);
             setError("An error occurred while adding the task.");
+        }
+    };
+
+    const handleDeleteTask = async (taskId) => {
+        try {
+            const response = await fetch(
+                `http://localhost:3000/task/${taskId}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setTasks((prevTasks) =>
+                    prevTasks.filter((task) => task._id !== taskId)
+                );
+                Swal.fire({
+                    icon: "success",
+                    title: "Task Deleted Successfully",
+                    confirmButtonText: "Okay",
+                    confirmButtonColor: "#ff6867",
+                });
+            } else {
+                console.error("Error deleting task:", data.message);
+                setError("Failed to delete task.");
+            }
+        } catch (error) {
+            console.error("Error deleting task:", error);
+            setError("An error occurred while deleting the task.");
         }
     };
 
@@ -243,6 +286,7 @@ const WorkArea = () => {
                             (task) => task.category === "To Do"
                         )}
                         moveTask={moveTask}
+                        handleDeleteTask={handleDeleteTask}
                     />
                     <Column
                         title="In Progress"
@@ -250,6 +294,7 @@ const WorkArea = () => {
                             (task) => task.category === "In Progress"
                         )}
                         moveTask={moveTask}
+                        handleDeleteTask={handleDeleteTask}
                     />
                     <Column
                         title="Done"
@@ -257,6 +302,7 @@ const WorkArea = () => {
                             (task) => task.category === "Done"
                         )}
                         moveTask={moveTask}
+                        handleDeleteTask={handleDeleteTask}
                     />
                 </div>
             </div>

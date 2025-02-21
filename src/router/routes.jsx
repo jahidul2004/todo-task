@@ -1,6 +1,4 @@
-import {
-    createBrowserRouter,
-} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Home from "../pages/home/Home";
 import Register from "../pages/register/Register";
 import Login from "../pages/login/Login";
@@ -15,22 +13,28 @@ const router = createBrowserRouter([
     },
     {
         path: "/register",
-        element: <LoginRegisterProtect>
-            <Register></Register>
-        </LoginRegisterProtect>
+        element: (
+            <LoginRegisterProtect>
+                <Register></Register>
+            </LoginRegisterProtect>
+        ),
     },
     {
         path: "/login",
-        element: <LoginRegisterProtect>
-            <Login></Login>
-        </LoginRegisterProtect>
+        element: (
+            <LoginRegisterProtect>
+                <Login></Login>
+            </LoginRegisterProtect>
+        ),
     },
     {
         path: "/workArea",
-        element: <PrivateRoute>
-            <WorkArea></WorkArea>
-        </PrivateRoute>
-    }
+        element: (
+            <PrivateRoute>
+                <WorkArea></WorkArea>
+            </PrivateRoute>
+        ),
+    },
 ]);
 
 export default router;

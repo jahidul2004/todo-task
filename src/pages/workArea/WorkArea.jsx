@@ -19,7 +19,7 @@ const Task = ({ task, moveTask }) => {
     return (
         <div
             ref={drag}
-            className={`border border-[#ff676734] text-left shadow-md p-2 rounded grid grid-cols-7 bg-white ${
+            className={`border border-[#ff676734] text-left shadow-md p-2 rounded grid grid-cols-7 bg-[#e6e1e15d] ${
                 isDragging ? "opacity-50" : ""
             }`}
         >
@@ -53,11 +53,12 @@ const Column = ({ title, tasks, moveTask }) => {
     return (
         <div
             ref={drop}
-            className="bg-white bg-opacity-20 backdrop-blur-md p-4 rounded-2xl shadow-md text-black min-h-[500px]"
+            className="bg-gradient-to-tl from-[#ff6867] to-[#fff] bg-opacity-20 backdrop-blur-md p-4 rounded-2xl shadow-md text-black min-h-[500px]"
         >
             <h2 className="text-xl font-semibold mb-4 text-[#ff6867] text-left flex items-center gap-2">
                 {title}
             </h2>
+
             <div className="space-y-3">
                 {tasks?.map((task) => (
                     <Task key={task._id} task={task} moveTask={moveTask} />
@@ -98,7 +99,6 @@ const WorkArea = () => {
             if (response.ok) {
                 console.log("Task updated successfully:", data);
 
-                // ফ্রন্টএন্ডে তালিকা আপডেট করুন
                 setTasks((prevTasks) =>
                     prevTasks.map((task) =>
                         task._id === taskId
@@ -127,12 +127,17 @@ const WorkArea = () => {
                         Welcome, {user?.displayName}
                     </h1>
 
-                    <button
-                        onClick={logout}
-                        className="btn text-[#ff6867] shadow-none border-none"
-                    >
-                        LogOut
-                    </button>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={logout}
+                            className="btn text-[#ff6867] shadow-none border-none"
+                        >
+                            LogOut
+                        </button>
+                        <button className="btn text-[#ff6867] shadow-none border-none">
+                            Add New Task
+                        </button>
+                    </div>
                 </div>
                 <h1 className="text-3xl font-bold text-white mb-6">
                     Your Tasks

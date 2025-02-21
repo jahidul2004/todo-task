@@ -81,11 +81,11 @@ const WorkArea = () => {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch("http://localhost:3000/tasks")
+        fetch(`http://localhost:3000/task/${user?.email}`)
             .then((res) => res.json())
             .then((data) => setTasks(data))
             .catch((error) => console.error("Error fetching tasks:", error));
-    }, [newTask, tasks]);
+    }, [user?.email, tasks]);
 
     const moveTask = async (taskId, newCategory) => {
         console.log(`Moving task ${taskId} to ${newCategory}`);
@@ -109,7 +109,7 @@ const WorkArea = () => {
 
                 setTasks((prevTasks) =>
                     prevTasks.map((task) =>
-                        task._id === taskId
+                        task?._id === taskId
                             ? { ...task, category: newCategory }
                             : task
                     )

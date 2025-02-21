@@ -67,6 +67,10 @@ const WorkArea = () => {
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="md:min-h-screen bg-gradient-to-br from-[#ff6867] flex flex-col items-center justify-center text-center p-4">
+                <div className="my-2 flex flex-col items-center gap-2">
+                    <img className="w-[60px] h-[60px] border border-white rounded-full p-1" src="" alt="" />
+                    <h1 className="font-bold text-white">Welcome, Jahidul Islam Jihad</h1>
+                </div>
                 <h1 className="text-3xl font-bold text-white mb-6">Your Tasks</h1>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
                     <Column title="To Do" tasks={tasks.filter(task => task.category === "To Do")} moveTask={moveTask} />

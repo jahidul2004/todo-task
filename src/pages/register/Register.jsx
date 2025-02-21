@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 const Register = () => {
     return (
         <div className="h-screen bg-gradient-to-br from-[#ff6867] flex flex-col items-center justify-center text-center">
-
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
                 <div className="card-body">
                     <h1 className="text-xl font-bold text-[#ff6867]">Please Register</h1>

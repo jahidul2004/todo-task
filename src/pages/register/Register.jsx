@@ -1,6 +1,14 @@
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 const Register = () => {
+    const { user, setUser, googleLogin } = useAuth();
+
+    const handleGoogleLogin = async () => {
+        googleLogin()
+            .then(user => setUser(user))
+            .catch(err => console.log(err));
+    }
     return (
         <div className="h-screen bg-gradient-to-br from-[#ff6867] flex flex-col items-center justify-center text-center">
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
@@ -15,7 +23,7 @@ const Register = () => {
                         <input required type="password" className="input" placeholder="Password" />
                         <div className="text-left"><p>Do you have any account? Please <Link to={"/login"} className="text-[#ff6867]">Login</Link></p></div>
                         <button className="btn bg-gradient-to-r from-[#ff6867] mt-4 text-white border-none shadow-none">Register</button>
-                        <button className="btn bg-gradient-to-l from-[#ff6867] mt-4 text-white border-none shadow-none"><FcGoogle />Login With Google</button>
+                        <button type="button" onClick={handleGoogleLogin} className="btn bg-gradient-to-l from-[#ff6867] mt-4 text-white border-none shadow-none"><FcGoogle />Login With Google</button>
                     </form>
                 </div>
             </div>

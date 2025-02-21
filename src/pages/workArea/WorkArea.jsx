@@ -71,13 +71,21 @@ const Column = ({ title, tasks, moveTask }) => {
 const WorkArea = () => {
     const { user, logout } = useAuth();
     const [tasks, setTasks] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [newTask, setNewTask] = useState({
+        title: "",
+        description: "",
+        category: "To Do",
+        timestamp: new Date().toISOString(),
+    });
+    const [error, setError] = useState("");
 
     useEffect(() => {
         fetch("http://localhost:3000/tasks")
             .then((res) => res.json())
             .then((data) => setTasks(data))
             .catch((error) => console.error("Error fetching tasks:", error));
-    }, []);
+    }, [newTask, tasks]);
 
     const moveTask = async (taskId, newCategory) => {
         console.log(`Moving task ${taskId} to ${newCategory}`);
@@ -114,6 +122,49 @@ const WorkArea = () => {
         }
     };
 
+    const handleNewTaskChange = (e) => {
+        const { name, value } = e.target;
+        setNewTask((prevTask) => ({
+            ...prevTask,
+            [name]: value,
+        }));
+    };
+
+    const handleAddTask = async () => {
+        if (!newTask.title || !newTask.description) {
+            setError("Title and description are required.");
+            return;
+        }
+
+        setError(""); // Clear error if valid data
+
+        try {
+            const response = await fetch("http://localhost:3000/task", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ...newTask,
+                    email: user?.email, // Include user email
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setTasks((prevTasks) => [...prevTasks, data]); // Add new task to state
+                setModalOpen(false); // Close modal
+            } else {
+                console.error("Error adding task:", data.message);
+                setError("Failed to add task.");
+            }
+        } catch (error) {
+            console.error("Error adding task:", error);
+            setError("An error occurred while adding the task.");
+        }
+    };
+
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="md:min-h-screen bg-gradient-to-br from-[#ff6867] flex flex-col items-center justify-center text-center p-4">
@@ -134,11 +185,54 @@ const WorkArea = () => {
                         >
                             LogOut
                         </button>
-                        <button className="btn text-[#ff6867] shadow-none border-none">
+                        <button
+                            className="btn text-[#ff6867] shadow-none border-none"
+                            onClick={() => setModalOpen(true)}
+                        >
                             Add New Task
                         </button>
                     </div>
                 </div>
+
+                {/* Modal */}
+                {modalOpen && (
+                    <div className="fixed inset-0 z-50 bg-gradient-to-tl from-[#ff6867] to-[#fff] bg-opacity-50 flex items-center justify-center">
+                        <div className="bg-white p-6 rounded-xl w-80">
+                            <h3 className="text-lg font-semibold mb-4">
+                                Add New Task
+                            </h3>
+                            {error && <p className="text-red-500">{error}</p>}
+                            <input
+                                type="text"
+                                name="title"
+                                placeholder="Title"
+                                value={newTask.title}
+                                onChange={handleNewTaskChange}
+                                className="w-full p-2 mb-4 border rounded"
+                            />
+                            <textarea
+                                name="description"
+                                placeholder="Description"
+                                value={newTask.description}
+                                onChange={handleNewTaskChange}
+                                className="w-full p-2 mb-4 border rounded"
+                            />
+                            <button
+                                onClick={handleAddTask}
+                                className="w-full bg-[#ff6867] text-white p-2 rounded"
+                            >
+                                Add Task
+                            </button>
+                            <button
+                                onClick={() => setModalOpen(false)}
+                                className="w-full mt-2 p-2 text-[#ff6867] border border-[#ff6867] rounded"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 <h1 className="text-3xl font-bold text-white mb-6">
                     Your Tasks
                 </h1>

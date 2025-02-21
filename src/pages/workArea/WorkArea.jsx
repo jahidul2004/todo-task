@@ -54,8 +54,8 @@ const Column = ({ title, tasks, moveTask }) => {
 };
 
 const WorkArea = () => {
-    const { user } = useAuth();
-    console.log(user);
+    const { user, logout } = useAuth();
+
     const [tasks, setTasks] = useState([
         { id: 1, title: "Task 1", description: "Hello I am Jahidul Islam Jihad. A fullstack web developer.", timestamp: "01.02.2025", category: "To Do" },
         { id: 2, title: "Task 2", description: "What is Your name. My name is Jahidul Islam Jihad. And I am a CSE student.", timestamp: "02.02.2025", category: "In Progress" },
@@ -76,7 +76,9 @@ const WorkArea = () => {
                     } alt="" />
                     <h1 className="font-bold text-white">Welcome, {user?.displayName}</h1>
 
-                    <button className="btn text-[#ff6867] shadow-none border-none">LogOut</button>
+                    <button onClick={() => {
+                        logout();
+                    }} className="btn text-[#ff6867] shadow-none border-none">LogOut</button>
                 </div>
                 <h1 className="text-3xl font-bold text-white mb-6">Your Tasks</h1>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">

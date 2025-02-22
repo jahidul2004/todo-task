@@ -32,7 +32,15 @@ const Register = () => {
                     <h1 className="text-xl font-bold text-[#ff6867]">
                         Please Register
                     </h1>
-                    <form className="fieldset">
+                    <p className="text-warning">Only Google Login is Workable!</p>
+                    <form
+                        onSubmit={() => {
+                            alert(
+                                "Try Google login from register page! Register and login is under developing!"
+                            );
+                        }}
+                        className="fieldset"
+                    >
                         <label className="fieldset-label">Name</label>
                         <input
                             required

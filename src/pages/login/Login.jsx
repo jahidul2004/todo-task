@@ -9,6 +9,9 @@ const Login = () => {
                     <h1 className="text-xl font-bold text-[#ff6867]">
                         Please Login
                     </h1>
+                    <p className="text-warning">
+                        Please back to register page and try google login.
+                    </p>
                     <form className="fieldset">
                         <label className="fieldset-label">Email</label>
                         <input

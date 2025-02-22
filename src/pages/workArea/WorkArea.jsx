@@ -93,7 +93,7 @@ const WorkArea = () => {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch(`http://localhost:3000/task/${user?.email}`)
+        fetch(`https://to-do-server-tan.vercel.app/task/${user?.email}`)
             .then((res) => res.json())
             .then((data) => setTasks(data))
             .catch((error) => console.error("Error fetching tasks:", error));
@@ -104,7 +104,7 @@ const WorkArea = () => {
 
         try {
             const response = await fetch(
-                `http://localhost:3000/task/${taskId}`,
+                `https://to-do-server-tan.vercel.app/task/${taskId}`,
                 {
                     method: "PUT",
                     headers: {
@@ -151,16 +151,19 @@ const WorkArea = () => {
         setError("");
 
         try {
-            const response = await fetch("http://localhost:3000/task", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    ...newTask,
-                    email: user?.email,
-                }),
-            });
+            const response = await fetch(
+                "https://to-do-server-tan.vercel.app/task",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        ...newTask,
+                        email: user?.email,
+                    }),
+                }
+            );
 
             const data = await response.json();
 
@@ -180,7 +183,7 @@ const WorkArea = () => {
     const handleDeleteTask = async (taskId) => {
         try {
             const response = await fetch(
-                `http://localhost:3000/task/${taskId}`,
+                `https://to-do-server-tan.vercel.app/task/${taskId}`,
                 {
                     method: "DELETE",
                 }

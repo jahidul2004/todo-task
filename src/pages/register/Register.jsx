@@ -19,7 +19,7 @@ const Register = () => {
                 };
 
                 axios
-                    .post("http://localhost:3000/user", newUser)
+                    .post("https://to-do-server-tan.vercel.app/user", newUser)
                     .then((res) => console.log(res))
                     .catch((err) => console.log(err));
             })

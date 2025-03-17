@@ -4,11 +4,11 @@
 
 ## Short Description
 
-This is a simple To-Do application that allows users to add, edit, delete, and mark tasks as completed. It provides an intuitive user interface to manage tasks efficiently.
+Todo-Task is an interactive and real-time task management system designed for efficient workflow organization. Built using JavaScript and WebSocket, this platform allows users to seamlessly drag and drop tasks between different stages, ensuring a smooth task-tracking experience.
 
 ## Live Links
 
--   Demo: [https://simple-firebase-14d0b.web.app/](#)
+- Demo: [Todo-Task Live](https://simple-firebase-14d0b.web.app/)
 
 ## Dependencies
 
@@ -21,5 +21,5 @@ This is a simple To-Do application that allows users to add, edit, delete, and m
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/jshidul2004/todo-task.git
+    git clone https://github.com/jahidul2004/todo-task.git
     ```

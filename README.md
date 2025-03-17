@@ -1,3 +1,5 @@
+![Trex Outfit Homepage](https://i.ibb.co.com/tpvBSR5H/todo-Socket.png)
+
 # To-Do Project
 
 ## Short Description
